@@ -1,6 +1,23 @@
 <div class="container" ng-init="homeinit()">
   <div class="jumbotron">
         <h1>Hello, Welcome To Hetnet</h1>
-        <p class="lead">You can See the latest networks and location from here</p>
+        <p class="lead">You can See the latest Phone Information from here</p>
   </div>
+  <table class="table table-hover">
+      <thead class= "thread-inverse">
+      <tr>
+        <th>Application ID</th>
+        <th>Application Type</th>
+        <th>Longtitude</th>
+        <th>Latitude</th>
+     </tr>
+    </thead>
+  <tbody>
+    <tr>
+      <td>{{Phone.applicationId}}</td>
+      <td>{{Phone.ApplicationType}}</td>
+      <td>{{Phone.Longtitude}}</td>
+      <td>{{Phone.Latitude}}</td>
+    </tr>
+  </tbody>
 </div>
