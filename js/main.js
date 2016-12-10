@@ -21,7 +21,7 @@ var mainController = function ($scope, $http, $log) {
         $http({
             url: "http://maps.googleapis.com/maps/api/geocode/json",
             method: "GET",
-            params:{latlng: $scope.ldata["Latitude"]+","+$scope.ldata["Longtitude"]}
+            params:{latlng: $scope.Phone["Latitude"]+","+$scope.Phone["Longtitude"]}
         }).success(function(response){
             $scope.location=response["results"][0]["formatted_address"];
         });
