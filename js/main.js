@@ -18,6 +18,13 @@ var mainController = function ($scope, $http, $log) {
             delete ldata["Networks"];
             $scope.Phone = ldata;
         });
+        $http({
+            url: "http://maps.googleapis.com/maps/api/geocode/json",
+            method: "GET",
+            params:{latlng: $scope.ldata["Latitude"]+","+$scope.ldata["Longtitude"]}
+        }).success(function(response){
+            $scope.location=response["results"][0]["formatted_address"];
+        });
     }
 
 }
