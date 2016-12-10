@@ -36,7 +36,7 @@
      </tr>
     </thead>
   <tbody>
-    <tr ng-repeat="network in Networks">
+    <tr ng-repeat="network in $parent.networks">
       <td>{{network.NetworkSSID}}</td>
       <td>{{network.SignalFrequency}}</td>
       <td>{{network.SignalStrength}}</td>
