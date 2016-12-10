@@ -14,7 +14,7 @@
     </thead>
   <tbody>
     <tr>
-      <td>{{Phone.applicationID}}</td>
+      <td>{{Phone.ApplicationID}}</td>
       <td>{{Phone.ApplicationType}}</td>
       <td>{{Phone.Longtitude}}</td>
       <td>{{Phone.Latitude}}</td>
@@ -36,11 +36,11 @@
      </tr>
     </thead>
   <tbody>
-    <tr>
-      <td>{{networks.NetworkSSID}}</td>
-      <td>{{networks.SignalFrequency}}</td>
-      <td>{{networks.SignalStrength}}</td>
-      <td>{{networks.SecurityProtocol}}</td>
+    <tr ng-repeat="network in Networks">
+      <td>{{network.NetworkSSID}}</td>
+      <td>{{network.SignalFrequency}}</td>
+      <td>{{network.SignalStrength}}</td>
+      <td>{{network.SecurityProtocol}}</td>
     </tr>
   </tbody>
 </div>
