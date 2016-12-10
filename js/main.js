@@ -15,7 +15,7 @@ var mainController = function ($scope, $http, $log) {
             var ldata  = response.pop();
             $log.debug(ldata);
             $scope.networks = ldata["Networks"];
-            ldata.remove('Networks');
+            delete ldata["Networks"];
             $scope.Phone = ldata;
         });
     }
