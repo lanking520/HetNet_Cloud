@@ -1,7 +1,7 @@
 /// </// <reference path="angular.min.js" />
 /// </// <reference path="highcharts.js" />
 var myApp = angular.module("Mainmodule", []);
-var preUrl = "http://35.162.120.77";
+var preUrl = "http://35.162.120.177";
 var mainController = function ($scope, $http, $log) {
 	$scope.currView = "/home/home.html";
     $scope.init = function () {
