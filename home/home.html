@@ -14,10 +14,33 @@
     </thead>
   <tbody>
     <tr>
-      <td>{{Phone.applicationId}}</td>
+      <td>{{Phone.applicationID}}</td>
       <td>{{Phone.ApplicationType}}</td>
       <td>{{Phone.Longtitude}}</td>
       <td>{{Phone.Latitude}}</td>
+    </tr>
+  </tbody>
+
+  <h3>My location</h3>
+  <p>{{location}}</p>
+
+  <h3>Networks</h3>
+
+  <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>SSID</th>
+        <th>Signal Frequency</th>
+        <th>Signal Strength</th>
+        <th>Security Protocol</th>
+     </tr>
+    </thead>
+  <tbody>
+    <tr>
+      <td>{{networks.NetworkSSID}}</td>
+      <td>{{networks.SignalFrequency}}</td>
+      <td>{{networks.SignalStrength}}</td>
+      <td>{{networks.SecurityProtocol}}</td>
     </tr>
   </tbody>
 </div>
