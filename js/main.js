@@ -13,6 +13,7 @@ var mainController = function ($scope, $http, $log) {
             method: "GET"
         }).success(function (response) {
             var ldata  = response.pop();
+            $log.debug(ldata);
             $scope.networks = ldata["Networks"];
             ldata.remove('Networks');
             $scope.Phone = ldata;
