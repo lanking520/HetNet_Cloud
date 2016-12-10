@@ -17,13 +17,13 @@ var mainController = function ($scope, $http, $log) {
             $scope.networks = ldata["Networks"];
             delete ldata["Networks"];
             $scope.Phone = ldata;
-        });
-        $http({
-            url: "http://maps.googleapis.com/maps/api/geocode/json",
-            method: "GET",
-            params:{latlng: $scope.Phone["Latitude"]+","+$scope.Phone["Longtitude"]}
-        }).success(function(response){
-            $scope.location=response["results"][0]["formatted_address"];
+            $http({
+                url: "http://maps.googleapis.com/maps/api/geocode/json",
+                method: "GET",
+                params:{latlng: $scope.Phone["Latitude"]+","+$scope.Phone["Longtitude"]}
+                }).success(function(response){
+                $scope.location=response["results"][0]["formatted_address"];
+                });
         });
     }
 
