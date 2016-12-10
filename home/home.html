@@ -23,7 +23,10 @@
 
   <h3>My location</h3>
   <p>{{location}}</p>
-  <ng-map center= "["+{{Phone.Latitude}} + ","+{{Phone.Longtitude}}+"]"></ng-map>
+  <div map-lazy-load="https://maps.google.com/maps/api/js"
+    map-lazy-load-params="{{googleMapsUrl}}">
+    <ng-map center= {{Phone.Latitude}} + ","+{{Phone.Longtitude}} zoom="3"></ng-map>
+  </div>
   <h3>Networks</h3>
 
   <table class="table table-hover">
