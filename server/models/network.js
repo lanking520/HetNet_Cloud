@@ -3,8 +3,7 @@ var mongoose = require('mongoose');
 var NetworkSchema = new mongoose.Schema({
     Time: {
         type: Date,
-        required: true,
-        unique: true
+        required: true
     },
     Email:{
         type: String,
@@ -24,6 +23,6 @@ var NetworkSchema = new mongoose.Schema({
         SecurityProtocol: String
     }]
 });
-
+NetworkSchema.index({Time:1, Email:1},{unique:true});
 // Export the model schema
 module.exports = NetworkSchema;
