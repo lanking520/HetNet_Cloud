@@ -1,4 +1,5 @@
 module.exports = {
-    '/system' : require('./controllers/SystemController'),
+    '/user' : require('./controllers/UserController'),
+    '/location' : require('./controllers/LocationController'),
     '/policy' : require('./controllers/PolicyController')
 };

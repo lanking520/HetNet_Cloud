@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 
-// create Stock schema
 var PolicySchema = new mongoose.Schema({
     ApplicationID: String,
     ApplicationType: String,
