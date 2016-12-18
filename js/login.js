@@ -9,7 +9,7 @@ var mainController = function($scope,$http,$log,$window){
     $http({
             url: preUrl+"/user", 
             method: "GET",
-            params: {email: $scope.myEmail, password:$scope.myPassword}
+            params: {Email: $scope.myEmail, Password:$scope.myPassword}
     }).success(function(response) {
       if (response == ""){$scope.failhider = false;}
       else{
@@ -25,7 +25,7 @@ var mainController = function($scope,$http,$log,$window){
     $http({
             url: preUrl+"/user", 
             method: "POST",
-            data: {email: $scope.myEmail, password:$scope.myPassword, name:$scope.myName}
+            data: {Email: $scope.myEmail, Password:$scope.myPassword, Name:$scope.myName}
     }).success(function(response) {
       if (response == ""){$scope.failhider = false;}
       else{
