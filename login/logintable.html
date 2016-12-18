@@ -1,0 +1,12 @@
+<form class="form-signin">
+        <h2 class="form-signin-heading">Hetnet Sign in</h2>
+        <div class="alert alert-danger" role="alert" ng-hide="$parent.failhider">
+        <strong>Sorry!</strong> Login Failed
+        </div>
+        <input type="email"  class="form-control" ng-model="$parent.myEmail" placeholder="Email" required autofocus>
+        <input type="password" ng-model="$parent.myPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="login()">Sign in</button>
+</form>
+<form class="form-signin">
+<button class="btn btn-lg btn-success btn-block" ng-click="goreg()">Register new user</button>
+</form>
