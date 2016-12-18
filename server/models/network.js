@@ -10,11 +10,7 @@ var NetworkSchema = new mongoose.Schema({
         required: true
     },
     Networks: [{
-        NetworkSSID:{
-            type: String,
-            required: true,
-            unique: true
-        },
+        NetworkSSID:String,
         Bandwidth: Number,
         SignalStrength: Number,
         SignalFrequency: Number,

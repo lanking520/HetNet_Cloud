@@ -10,11 +10,7 @@ var SystemSchema = new mongoose.Schema({
         required: true
     },
     Applications: [{
-        ProcessName:{
-            type: String,
-            required: true,
-            unique: true
-        },
+        ProcessName: String,
         CpuUsage: Number,
         RxBytes: Number,
         TxBytes: Number,
