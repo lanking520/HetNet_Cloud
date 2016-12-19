@@ -1,45 +1,8 @@
 <div class="container" ng-init="homeinit()">
   <div class="jumbotron">
         <h1>Hello {{$parent.personalInfo.Name}}, Welcome To Hetnet</h1>
-        <p class="lead">You can See the latest Phone Information from here</p>
+        <p class="lead">You can See the latest Phone Information from here<br>
+        Last Update: {{$parent.testinfo}}
+        </p>
   </div>
-  <table class="table table-hover">
-      <thead class= "thread-inverse">
-      <tr>
-        <th>Application ID</th>
-        <th>Application Type</th>
-        <th>Longtitude</th>
-        <th>Latitude</th>
-     </tr>
-    </thead>
-  <tbody>
-    <tr>
-      <td>{{Phone.ApplicationID}}</td>
-      <td>{{Phone.ApplicationType}}</td>
-      <td>{{Phone.Longtitude}}</td>
-      <td>{{Phone.Latitude}}</td>
-    </tr>
-  </tbody>
-
-  <h3>My location</h3>
-  <p>{{location}}</p>
-  <h3>Networks</h3>
-
-  <table class="table table-hover">
-      <thead>
-      <tr>
-        <th>SSID</th>
-        <th>Signal Frequency</th>
-        <th>Signal Strength</th>
-        <th>Security Protocol</th>
-     </tr>
-    </thead>
-  <tbody>
-    <tr ng-repeat="network in $parent.networks">
-      <td>{{network.NetworkSSID}}</td>
-      <td>{{network.SignalFrequency}}</td>
-      <td>{{network.SignalStrength}}</td>
-      <td>{{network.SecurityProtocol}}</td>
-    </tr>
-  </tbody>
 </div>
