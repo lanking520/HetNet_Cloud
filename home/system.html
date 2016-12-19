@@ -1,0 +1,46 @@
+<div class="container" ng-init="systeminit()">
+    <h2>Systems</h2>
+    <table class="table table-hover">
+      <thead class= "thread-inverse">
+      <tr>
+        <th>Attribute</th>
+        <th>Updated Data</th>
+     </tr>
+    </thead>
+  <tbody>
+    <tr>
+      <td>Updated Time</td>
+      <td>{{$parent.systems.Time}}</td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>{{$parent.personalInfo.Name}}</td>
+    </tr>
+  </tbody>
+  <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>ProcessName</th>
+        <th>PrivateClean</th>
+        <th>CPU Usage</th>
+        <th>Battery%</th>
+        <th>PSS</th>
+        <th>USS</th>
+        <th>TxBytes</th>
+        <th>RxBytes</th>
+     </tr>
+    </thead>
+  <tbody>
+    <tr ng-repeat="app in $parent.systems.Applications">
+      <td>{{app.ProcessName}}</td>
+      <td>{{app.PrivateClean}}</td>
+      <td>{{app.CpuUsage}}</td>
+      <td>{{app.BatteryPercent}}</td>
+      <td>{{app.Pss}}</td>
+      <td>{{app.Uss}}</td>
+      <td>{{app.TxBytes}}</td>
+      <td>{{app.RxBytes}}</td>
+    </tr>
+  </tbody>
+</div>
+</div>

@@ -25,6 +25,11 @@ var mainController = function ($scope, $http, $window, $interval, $log, httpServ
         networkinterval = $interval(networkcycle, 3000);
     }
 
+    $scope.systeminit = function(){
+        stopallinterval();
+        systeminterval = $interval(systemcycle, 3000);
+    }
+
     var homecycle = function(){
         httpService.getLatesttime($scope.personalInfo.Email).success(function (response) {
             $scope.testinfo = response[0]["Time"];        
@@ -37,12 +42,20 @@ var mainController = function ($scope, $http, $window, $interval, $log, httpServ
         });
     }
 
+    var systemcycle = function(){
+        httpService.getLastestSystemInfo($scope.personalInfo.Email).success(function (response) {
+            $scope.systems = response[0];
+        });
+    }
+
     var stopallinterval = function(){
         $interval.cancel(homeinterval);
         $interval.cancel(networkinterval);
         $interval.cancel(systeminterval);
         $interval.cancel(locationinterval);
     }
+
+
 }
 
 var httpService = function($http, $log){
