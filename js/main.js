@@ -5,7 +5,10 @@ var preUrl = "http://35.162.120.177";
 var mainController = function ($scope, $http, $log) {
 	$scope.currView = "/home/home.html";
     $scope.init = function () {
-       $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv7LXWXvrFxVXasT4su3kOHg6Kyv0gSUY";
+        var data = $window.sessionStorage.getItem("PersonalInfo");
+        if (data == "" || data == undefined)
+        { $window.location.href = '../'; }
+        $scope.personalInfo = JSON.parse(data)[0];
     }
     $scope.homeinit = function(){
     	$http({
