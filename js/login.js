@@ -1,6 +1,6 @@
 /// </// <reference path="angular.min.js" />
 var myApp = angular.module("Mainmodule",[]);
-var preUrl = "http://35.162.120.177";
+var preUrl = "http://52.34.111.57";
 var mainController = function($scope,$http,$log,$window){
   $scope.failhider = true;
   // Login Logic
