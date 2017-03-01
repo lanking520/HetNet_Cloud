@@ -14,6 +14,11 @@ On amazon EC2 machince
 
 [Check the Port Working Properly](http://www.yougetsignal.com/tools/open-ports/)
 
+```python
+python -m SimpleHTTPServer 8000
+```
+Try this to see your port open correctly
+
 ### System Environment for Amazon EC 2 (Same as Ubuntu and OSX)
 ```
 sudo apt-get install build-essential curl git python-setuptools ruby
