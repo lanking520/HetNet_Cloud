@@ -11,6 +11,9 @@
 ## Requirement (Mac)
 On amazon EC2 machince
 [http://www.lauradhamilton.com/how-to-set-up-a-nodejs-web-server-on-amazon-ec2]
+
+[Check the Port Working Properly](http://www.yougetsignal.com/tools/open-ports/)
+
 ### System Environment for Amazon EC 2 (Same as Ubuntu and OSX)
 ```
 sudo apt-get install build-essential curl git python-setuptools ruby
