@@ -51,3 +51,7 @@ screen
 use ctrl A+D to exit
 use exit; to shut down the screen
 ```
+### See Port open
+```
+netstat -ntlp | grep LISTEN
+```
