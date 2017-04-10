@@ -50,6 +50,8 @@ In order to run this web app, you need mongodb setup in the server and have a DB
 screen
 use ctrl A+D to exit
 use exit; to shut down the screen
+screen -ls see all sessions
+screen -r <number of thread> go to the log
 ```
 ### See Port open
 ```
