@@ -13,6 +13,8 @@
 
 [Check the Port Working Properly](http://www.yougetsignal.com/tools/open-ports/)
 
+Currently the port working on the Amazon AMI, ubuntu may have port failure.
+
 ```python
 python -m SimpleHTTPServer 8000
 ```
