@@ -8,10 +8,10 @@ var preUrl = "http://34.201.21.219:8111"
 
 
 function homeController($scope, $http, $window, httpService, NgMap) {
-    var vm = this;
-    var email = $window.sessionStorage.getItem("userEmail");
 
     $scope.mainInit = function(){
+        var vm = this;
+        var email = $window.sessionStorage.getItem("userEmail");
         $scope.email = email;
         $scope.homeView = "../home/main.html";
         $scope.networkList;
@@ -20,12 +20,12 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         $scope.applicationPackageList;
         // Store selected application
         $scope.selectedApplication;
+        // Vars used for sorting and search
+        $scope.networkOrderByField = "time";
+        $scope.networkReverseSort = false;
+        $scope.appdataOrderByField = "time";
+        $scope.appdataReverseSort = false;
     }
-    // Vars used for sorting and search
-    $scope.networkOrderByField = "time";
-    $scope.networkReverseSort = false;
-    $scope.appdataOrderByField = "time";
-    $scope.appdataReverseSort = false;
 
     // switch to main
     $scope.switchMain = function () {
