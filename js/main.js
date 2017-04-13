@@ -5,12 +5,12 @@ homeApp.controller("homeController", homeController);
 homeApp.service("httpService", httpService);
 
 var preUrl = "http://34.201.21.219:8111"
+var vm = this;
 
 
 function homeController($scope, $http, $window, httpService, NgMap) {
 
     $scope.mainInit = function(){
-        var vm = this;
         var email = $window.sessionStorage.getItem("userEmail");
         $scope.email = email;
         $scope.homeView = "../home/main.html";
