@@ -1,0 +1,70 @@
+<div class="col-xs-12" ng-init="applicationDataInit()">
+	<div class="box">
+		<div class="box-header">
+			<h3 class="box-title">
+				Application Data
+			</h3>
+		</div>
+
+		<div class="box-body">
+			<div class="input-group">
+				<div class="input-group-addon"><i class="fa fa-search"></i></div>
+				<input type="text" class="form-control" placeholder="Search Application Data" ng-model="appdataTableSearch">
+			</div>
+
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>
+							<a href="#" ng-click="appdataOrderByField='uid'; appdataReverseSort = !appdataReverseSort">
+								UID
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="appdataOrderByField='upload'; appdataReverseSort = !appdataReverseSort">
+								Upload
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="appdataOrderByField='download'; appdataReverseSort = !appdataReverseSort">
+								Download
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="appdataOrderByField='application_package'; appdataReverseSort = !appdataReverseSort">
+								Application Package
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="appdataOrderByField='timestamp'; appdataReverseSort = !appdataReverseSort">
+								Timestamp
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="appdataOrderByField='device_id'; appdataReverseSort = !appdataReverseSort">
+								Device ID
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="appdataOrderByField='time'; appdataReverseSort = !appdataReverseSort">
+								Time
+							</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody ng-repeat="appdata in appdataList | 
+				orderBy:appdataOrderByField:appdataReverseSort | filter:appdataTableSearch | limitTo: 100">
+					<tr>
+						<td>{{ appdata.uid }}</td>
+						<td>{{ appdata.upload }}</td>
+						<td>{{ appdata.download }}</td>
+						<td>{{ appdata.application_package }}</td>
+						<td>{{ appdata.timestamp }}</td>
+						<td>{{ appdata.device_id }}</td>
+						<td>{{ appdata.time }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

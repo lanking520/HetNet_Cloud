@@ -1,0 +1,4 @@
+*.pyc
+webserver/.idea
+frontend/_site
+webserver/_site
