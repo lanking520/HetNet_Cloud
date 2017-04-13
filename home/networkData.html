@@ -1,0 +1,69 @@
+<div class="col-xs-12" ng-init="networkDataInit()">
+	<div class="box">
+		<div class="box-header">
+			<h3 class="box-title">
+				Network Data
+			</h3>
+		</div>
+		<div class="box-body">
+			<ng-map center="[40.74, -74.18]"></ng-map>
+		</div>
+		<div class="box-body">
+			<p>Current Location: {{CurrLoc}}</p>
+			<div class="input-group">
+				<div class="input-group-addon"><i class="fa fa-search"></i></div>
+				<input type="text" class="form-control" placeholder="Search Network" ng-model="networkTableSearch">
+			</div>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>
+							<a href="#" ng-click="networkOrderByField='ssid'; networkReverseSort = !networkReverseSort">
+								SSID
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="networkOrderByField='bandwidth'; networkReverseSort = !networkReverseSort">
+								Bandwidth
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="networkOrderByField='avgss'; networkReverseSort = !networkReverseSort">
+								Avgss
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="networkOrderByField='location'; networkReverseSort = !networkReverseSort">
+								Location
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="networkOrderByField='security'; networkReverseSort = !networkReverseSort">
+								Security
+							</a>
+						</th>
+						<th>
+							<a href="#" ng-click="networkOrderByField='device_id'; networkReverseSort = !networkReverseSort">Device ID</a>
+						</th>
+						<th>
+							<a href="#" ng-click="networkOrderByField='age'; networkReverseSort = !networkReverseSort">
+								Time
+							</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody ng-repeat="network in networkList | orderBy: networkOrderByField:networkReverseSort | filter:networkTableSearch | limitTo:100">
+					<tr>
+						<td>{{ network.ssid }}</td>
+						<td>{{ network.bandwidth }}</td>
+						<td>{{ network.avgss }}</td>
+						<td>{{ network.location }}</td>
+						<td>{{ network.security }}</td>
+						<td>{{ network.device_id }}</td>
+						<td>{{ network.time }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

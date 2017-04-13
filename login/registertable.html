@@ -1,13 +1,14 @@
 <form class="form-signin">
-        <h2 class="form-signin-heading">Register</h2>
-        <div class="alert alert-danger" role="alert" ng-hide="$parent.failhider">
-        <strong>Sorry!</strong> Register Failed
-        </div>
-        <input type="text" class="form-control" ng-model="$parent.myName" placeholder="Name" required>
-        <input type="email" class="form-control" ng-model="$parent.myEmail" placeholder="Email" required autofocus>
-        <input type="password" ng-model="$parent.myPassword" class="form-control" placeholder="newPassword" required>
-        <button class="btn btn-lg btn-success btn-block" ng-click="register()">Register new user</button>
+	<h2 class="form-signin-heading">Register</h2>
+	<div class="alert alert-danger" role="alert" ng-hide="$parent.failhider">
+		<strong>Sorry!</strong> Register Failed
+	</div>
+
+	<input type="text" class="form-control" ng-model="$parent.name" placeholder="Name" required>
+	<input type="email" class="form-control" ng-model="$parent.email" placeholder="Email" required autofocus="">
+	<input type="password" ng-model="$parent.password" class="form-control" placeholder="Password" required>
+	<button class="btn btn-lg btn-success btn-block" ng-click="register()">Register New User</button>
 </form>
 <form class="form-signin">
-        <button class="btn btn-lg btn-primary btn-block" ng-click="backhome()">Back to Home</button>
+	<button class="btn btn-lg btn-primary btn-block" ng-click="switchSigninPage()">Sign In</button>
 </form>
