@@ -7,11 +7,10 @@ homeApp.service("httpService", httpService);
 var preUrl = "http://34.201.21.219:8111"
 var vm = this;
 
-
 function homeController($scope, $http, $window, httpService, NgMap) {
+    var email = $window.sessionStorage.getItem("userEmail");
 
     $scope.mainInit = function(){
-        var email = $window.sessionStorage.getItem("userEmail");
         $scope.email = email;
         $scope.homeView = "../home/main.html";
         $scope.networkList;
@@ -20,12 +19,12 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         $scope.applicationPackageList;
         // Store selected application
         $scope.selectedApplication;
-        // Vars used for sorting and search
-        $scope.networkOrderByField = "time";
-        $scope.networkReverseSort = false;
-        $scope.appdataOrderByField = "time";
-        $scope.appdataReverseSort = false;
     }
+    // Vars used for sorting and search
+    $scope.networkOrderByField = "time";
+    $scope.networkReverseSort = false;
+    $scope.appdataOrderByField = "time";
+    $scope.appdataReverseSort = false;
 
     // switch to main
     $scope.switchMain = function () {
@@ -69,9 +68,16 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         //vm.markerClusterer = new MarkerClusterer(vm.map, [], {});
     };
 
-    function getnetworks(){
+    function getlocation(){
         vm.coord = [];
-        httpService.getnetworks().then(function (response) {
+        httpService.getalllocation().then(function (response){
+            vm.coord = response.data.locations;
+        });
+    }
+
+    function getnetworks(location){
+        $scope.networkList = [];
+        httpService.getnetbylocation(location).then(function (response) {
             for (var i = 0; i < response.data.networks.length; i++) {
                 var network = {
                     "ssid": response.data.networks[i].ssid,
@@ -82,13 +88,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
                     "device_id": response.data.networks[i].device_id,
                     "time": response.data.networks[i].time
                 };
-                if(vm.coord[response.data.networks[i].location] == null){
-                    vm.coord[response.data.networks[i].location] = [];
-                    vm.coord[response.data.networks[i].location].push(network);
-                }
-                else{
-                    vm.coord[response.data.networks[i].location].push(network);
-                }
+                $scope.networkList.push(network);
             }
         });
     }
@@ -96,7 +96,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     function assignNetworks(){
         var dynMarkers = [];
         for (key in vm.coord) {
-                latlng = key.split(",");
+                latlng = vm.coord[key].split(",");
                 var latLng = new google.maps.LatLng(latlng[1], latlng[0]);
                 var marker = new google.maps.Marker({
                     position:latLng,
@@ -104,10 +104,10 @@ function homeController($scope, $http, $window, httpService, NgMap) {
                 });
                 google.maps.event.addListener(marker,'click', function(event){
                     var loc = event.latLng.lng().toFixed(4).toString() +","+event.latLng.lat().toFixed(4).toString();
-                    $scope.networkList = vm.coord[loc];
                     httpService.getLocationParser(event.latLng.lat(), event.latLng.lng()).then(function (response) {
                         $scope.CurrLoc = response.data.results[0].formatted_address;
                     });
+                    getnetworks(loc);
                     $scope.$apply(); // Trigger the Event! After this process
                 });
                 dynMarkers.push(marker);
@@ -117,7 +117,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     // Init network data
     $scope.networkDataInit = function () {
        mapinit();
-       getnetworks();
+       getlocation();
        setTimeout(function(){$scope.$apply(assignNetworks());}, 2000);
     };
 
@@ -460,21 +460,36 @@ function httpService($http) {
     this.getnetworks = function () {
         return $http({
             url: preUrl + "/network/getall",
-            method: "GET",
+            method: "GET"
+        });
+    }
+
+    this.getalllocation = function(){
+        return $http({
+            url: preUrl + "/network/getalllocation",
+            method: "GET"
+        });
+    }
+
+    this.getnetbylocation = function(location){
+        return $http({
+            url: preUrl +"/network/bylocation",
+            method:"GET",
+            params: {"location": location}
         });
     }
 
     this.getavgssbyssid = function () {
         return $http({
             url: preUrl + "/network/avgss",
-            method: "GET",
+            method: "GET"
         });
     }
 
     this.getbandwidthbyssid = function () {
         return $http({
             url: preUrl + "/network/bandwidth",
-            method: "GET",
+            method: "GET"
         });
     }
 
