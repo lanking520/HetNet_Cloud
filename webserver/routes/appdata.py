@@ -59,7 +59,7 @@ def get_all_app_data():
     """
 
     try:
-        cursor_select = g.conn.execute('SELECT * FROM appdata')
+        cursor_select = g.conn.execute('SELECT * FROM appdata WHERE (upload != 0 OR download != 0)')
 
         results = {}
         results['appdata'] = []
