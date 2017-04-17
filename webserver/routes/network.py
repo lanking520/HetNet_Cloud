@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from flask import render_template,Response
 from . import routes
 from application import *
@@ -418,8 +421,9 @@ def get_all_avgss():
         ssids = []
         avgsss = []
 
+
         for row in cursor_select:
-            ssids.append(str(row['ssid']))
+            ssids.append(row[0].encode('utf-8'))
 
         for i in range(len(ssids)):
 
@@ -463,7 +467,7 @@ def get_all_bandwidth():
         bands = []
 
         for row in cursor_select:
-            ssids.append(str(row['ssid']))
+            ssids.append(row[0].encode('utf-8'))
 
         for i in range(len(ssids)):
 
