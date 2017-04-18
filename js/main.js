@@ -414,7 +414,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
                 },
                 yAxis: {
                     title: {
-                        text: 'Upload'
+                        text: 'Download'
                     }
                 },
                 legend: {
