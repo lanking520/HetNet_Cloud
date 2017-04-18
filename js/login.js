@@ -1,6 +1,7 @@
 var myApp = angular.module("Mainmodule", []);
-// var preURL = "http://34.201.21.219:8111"
-var preURL = "http://0.0.0.0:8111"
+
+var preUrl = "http://34.201.21.219:8111";
+//var preURL = "http://0.0.0.0:8111"
 
 var mainController = function ($scope, $http, $log, $window) {
 	$scope.failhider = true;
