@@ -18,6 +18,7 @@ def upload_application():
     applications = application_data["Applications"]
     device_id = application_data["device_id"]
     time = application_data["Time"]
+    location = application_data["Location"]
 
     # Check if device_id in login table
     login_cursor_select = g.conn.execute('SELECT * FROM login WHERE device_id = %s',
@@ -34,9 +35,9 @@ def upload_application():
             cursor_select = g.conn.execute('SELECT * FROM appdata WHERE uid = %s AND device_id = %s AND time = %s',
                                            application["uid"], device_id, time)
             if cursor_select.rowcount == 0:
-                cursor_insert = g.conn.execute('INSERT INTO appdata(uid, timestamp, download, application_package, upload, device_id, time) VALUES(%s, %s, %s, %s, %s, %s, %s)',
+                cursor_insert = g.conn.execute('INSERT INTO appdata(uid, timestamp, download, application_package, upload, device_id, time, location) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)',
                                                application["uid"], application["time"], application["download"],
-                                               application["application_package"], application["upload"], device_id, time)
+                                               application["application_package"], application["upload"], device_id, time, location)
             else:
                 pass
 
@@ -71,6 +72,7 @@ def get_all_app_data():
             upload = row['upload']
             device_id = row['device_id']
             time = row['time']
+            location = row['location']
 
             appdata = {
                 "uid": int(uid),
@@ -79,7 +81,8 @@ def get_all_app_data():
                 "application_package": application_package,
                 "upload": float(upload),
                 "device_id": device_id,
-                "time": time
+                "time": time,
+                "location": location
             }
             results['appdata'].append(appdata)
 
@@ -120,6 +123,7 @@ def get_appdata_by_device_id():
             upload = row['upload']
             device_id = row['device_id']
             time = row['time']
+            location = row['location']
 
             appdata = {
                 "uid": int(uid),
@@ -128,7 +132,8 @@ def get_appdata_by_device_id():
                 "application_package": application_package,
                 "upload": float(upload),
                 "device_id": device_id,
-                "time": time
+                "time": time,
+                "location": location
             }
             results['appdata'].append(appdata)
 
@@ -169,7 +174,8 @@ def get_appdata_by_uid():
             application_package = row['application_package']
             upload = row['upload']
             device_id = row['device_id']
-            time = row['time']
+            time = row['time'],
+            location = row['location']
 
             appdata = {
                 "uid": int(uid),
@@ -178,7 +184,8 @@ def get_appdata_by_uid():
                 "application_package": application_package,
                 "upload": float(upload),
                 "device_id": device_id,
-                "time": time
+                "time": time,
+                "location": location
             }
             results['appdata'].append(appdata)
 
@@ -220,6 +227,7 @@ def get_appdata_by_application_package():
             upload = row['upload']
             device_id = row['device_id']
             time = row['time']
+            location = row['location']
 
             appdata = {
                 "uid": int(uid),
@@ -228,7 +236,8 @@ def get_appdata_by_application_package():
                 "application_package": application_package,
                 "upload": float(upload),
                 "device_id": device_id,
-                "time": time
+                "time": time,
+                "location": location
             }
             results['appdata'].append(appdata)
 
@@ -240,6 +249,8 @@ def get_appdata_by_application_package():
 
         response_json = {"Status": "Failure"}
         return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
+
+
 
 
 @routes.route('/appdata/downloadstats', methods=['GET'])
