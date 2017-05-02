@@ -5,6 +5,51 @@ import json
 from flask import request
 
 
+@routes.route('/event/getmacidbyprefbyloc', methods = ['GET'])
+def get_macid_by_pred_by_loc():
+    """
+    get mac id by uid, device_id and location
+    :return: {
+        "macid": macid
+    }
+    """
+
+    uid_param = request.args.get('uid')
+    device_id_param = request.args.get('device_id')
+    loc_param = request.args.get('location')
+
+    try:
+        cursor_select = g.conn.execute('SELECT preference FROM apppref WHERE uid = %s AND location = %s AND device_id = %s',
+                                       uid_param, loc_param, device_id_param)
+
+        pref = ""
+
+        for row in cursor_select:
+            pref = row['preference']
+
+        results = {}
+        results["macid"] = pref
+
+        if pref == "highest bandwidth":
+            cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.bandwidth = (SELECT MAX(bandwidth) FROM neteval) LIMIT 1')
+            for row in cursor_select:
+                results["macid"] = row["macid"]
+        elif pref == "lowest latency":
+            cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.latency = (SELECT MIN(latency) FROM neteval) LIMIT 1')
+            for row in cursor_select:
+                results["macid"] = row["macid"]
+
+        return Response(response=json.dumps(results), status=200, mimetype="application/json")
+
+
+    except Exception as e:
+        print e
+
+        response_json = {"Status": "Failure"}
+        return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
+
+
+
 @routes.route('/event/getmacidbyprefbyuidloc', methods=['GET'])
 def get_macid_by_pref_by_uid_loc():
     """
