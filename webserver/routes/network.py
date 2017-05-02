@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import render_template,Response
-from . import routes
-from application import *
 import json
+
+from application import *
+from . import routes
 
 
 @routes.route('/network', methods=['POST'])
@@ -35,13 +35,46 @@ def upload_network():
 
             # Find if network already exists in database
             cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE macid = %s AND location = %s',
-                                    network["macid"], location)
+                                           network["macid"], location)
             if cursor_select.rowcount == 0:
-                cursor_insert = g.conn.execute('INSERT INTO networkdata(macid, ssid, bandwidth, latency, security, location, avgss, device_id, time) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                                               network['macid'], network["ssid"], network["bandwidth"], network['latency'], network["security"],
-                                               location, network["avgss"], device_id, time)
+                cursor_insert = g.conn.execute(
+                    'INSERT INTO networkdata(macid, ssid, bandwidth, latency, security, location, avgss, device_id, time) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                    network['macid'], network["ssid"], network["bandwidth"], network['latency'], network["security"],
+                    location, network["avgss"], device_id, time)
             else:
                 pass
+    except Exception as e:
+        print e
+
+        response_json = {"Status": "Failure"}
+        return Response(response=json.dumps(response_json), status=400, mimetype="application/json")
+
+    response_json = {"Status": "Success"}
+    return Response(response=json.dumps(response_json), status=200, mimetype="application/json")
+
+
+@routes.route('/neteval', methods=['POST'])
+def upload_neteval():
+    neteval_data = request.get_json()
+
+    # Extract network data
+    time = neteval_data['Time']
+    Macaddr = neteval_data['Macaddr']
+    Latency = neteval_data['Latency']
+    Bandwidth = neteval_data['Bandwidth']
+    Location = neteval_data['Location']
+
+    # Insert into network
+    try:
+
+        # First test if already exists using macid
+        cursor_select = g.conn.execute('SELECT * FROM neteval WHERE macid = %s', Macaddr)
+
+        if cursor_select.rowcount == 0:
+            cursor_insert = g.conn.execute(
+                'INSERT INTO neteval(macid, time, bandwidth, latency) VALUES (%s, %s, %s, %s)',
+                Macaddr, time, Bandwidth, Latency)
+
     except Exception as e:
         print e
 
@@ -402,7 +435,9 @@ def get_all_ssid():
         results["ssid"] = []
 
         for row in cursor_select:
-            results["ssid"].append(row['ssid'])
+            results["ssid"].append({
+                'name': row['ssid']
+            })
 
         return Response(response=json.dumps(results), status=200, mimetype="application/json")
 
@@ -415,8 +450,6 @@ def get_all_ssid():
 
 @routes.route('/network/avgss', methods=['GET'])
 def get_all_avgss():
-
-
     try:
 
         cursor_select = g.conn.execute('SELECT DISTINCT ssid FROM networkdata')
@@ -424,14 +457,13 @@ def get_all_avgss():
         ssids = []
         avgsss = []
 
-
         for row in cursor_select:
             ssids.append(row[0].encode('utf-8'))
 
         for i in range(len(ssids)):
 
             cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE ssid = %s LIMIT 5',
-                                       ssids[i])
+                                           ssids[i])
 
             avgss_sum = 0.0
             for row in cursor_select:
@@ -455,8 +487,6 @@ def get_all_avgss():
 
 @routes.route('/network/bandwidth', methods=['GET'])
 def get_all_bandwidth():
-
-
     try:
 
         cursor_select = g.conn.execute('SELECT DISTINCT ssid FROM networkdata')
@@ -470,7 +500,7 @@ def get_all_bandwidth():
         for i in range(len(ssids)):
 
             cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE ssid = %s LIMIT 5',
-                                       ssids[i])
+                                           ssids[i])
 
             bandwidth_sum = 0.0
             for row in cursor_select:
