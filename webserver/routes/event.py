@@ -90,6 +90,18 @@ def set_app_pref():
         return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
 
 
+# @routes.route('/event/getmacidbyprefbyloc', methods = ['GET'])
+# def get_macid_by_pref_by_loc():
+#
+#     # Get parameters
+#     user_id = request.args.get('user_id')
+#     device_id = request.args.get('device_id')
+#     location = request.args.get('location')
+#
+#     try:
+#         # Find preference based on user_id, device_id and location
+#         cursor_select = g.conn.execute()
+
 @routes.route('/event/setlocpref', methods = ['POST'])
 def set_loc_pref():
     params = request.get_json()

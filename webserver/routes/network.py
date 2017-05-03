@@ -14,7 +14,7 @@ def upload_network():
     # Extract data from json
     networks = network_data["Networks"]
 
-    location = network_data["location"].split(",")
+    location = network_data["Location"].split(",")
     location = str(location[0][:8]) + ',' + str(location[1][:7])
 
     device_id = network_data["device_id"]
