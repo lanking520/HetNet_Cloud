@@ -14,6 +14,8 @@ class table:
 	APPPREF = "CREATE TABLE IF NOT EXISTS apppref (uid text, device_id text, location text, preference text, time text, PRIMARY KEY (uid, device_id, location));"
 >>>>>>> origin/master
 >>>>>>> Stashed changes
+
+	loc_pref = "CREATE TABLE IF NOT EXISTS loc_pref (user_id text, device_id text, location text, preference text, time text, location_name text, PRIMARY KEY (user_id, device_id, location));"
 	# Type indicate the CPU/Battery/DataUsage
 
 
