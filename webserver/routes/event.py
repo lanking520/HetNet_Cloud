@@ -64,7 +64,7 @@ def set_app_pref():
     loc = params['location']
     time = params['time']
     pref = params['preference']
-    user_id = ['user_id']
+    user_id = params['user_id']
 
 
     try:
