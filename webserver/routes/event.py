@@ -68,10 +68,10 @@ def set_app_pref():
 
 
     try:
-        if pref != "highest bandwidth" and pref != "lowest latency":
-            cursor_select = g.conn.execute('SELECT macid FROM networkdata WHERE ssid = %s', pref)
-            for row in cursor_select:
-                pref = row['macid']
+        # if pref != "highest bandwidth" and pref != "lowest latency":
+        #     cursor_select = g.conn.execute('SELECT macid FROM networkdata WHERE ssid = %s', pref)
+        #     for row in cursor_select:
+        #         pref = row['macid']
 
         # Find if network already exists in database
         cursor_select = g.conn.execute('SELECT * FROM apppref WHERE uid = %s AND location = %s AND device_id = %s',
@@ -150,10 +150,10 @@ def set_loc_pref():
 
     try:
         # When preference is network name
-        if pref != "highest bandwidth" and pref != "lowest latency":
-            cursor_select = g.conn.execute('SELECT macid FROM networkdata WHERE ssid = %s', pref)
-            for row in cursor_select:
-                pref = row['macid']
+        # if pref != "highest bandwidth" and pref != "lowest latency":
+        #     cursor_select = g.conn.execute('SELECT macid FROM networkdata WHERE ssid = %s', pref)
+        #     for row in cursor_select:
+        #         pref = row['macid']
 
         # Find if network already exists in database
         cursor_select = g.conn.execute('SELECT * FROM loc_pref WHERE user_id = %s AND location = %s AND device_id = %s',

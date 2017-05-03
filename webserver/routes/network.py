@@ -42,7 +42,10 @@ def upload_network():
                     network['macid'], network["ssid"], network["security"],
                     location, network["avgss"], device_id, time)
             else:
-                pass
+                cursor_update = g.conn.execute(
+                    'UPDATE networkdata SET macid = %s, security = %s, location = %s, avgss = %s, device_id = %s, time = %s WHERE ssid = %s AND location = %s',
+                    network['macid'], network['security'], location, network['avgss'], device_id, time, network['ssid'], location)
+
     except Exception as e:
         print e
 
