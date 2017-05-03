@@ -63,10 +63,11 @@ def upload_neteval():
     # Extract network data
     time = neteval_data['Time']
     Macaddr = neteval_data['Macaddr']
-    Latency = neteval_data['Latency']
-    Bandwidth = neteval_data['Bandwidth']
+    Latency = float(neteval_data['Latency'])
+    Bandwidth = float(neteval_data['Bandwidth'])
     Location = neteval_data['Location']
     device_id = neteval_data['device_id']
+
 
     # Check if Bandwidth null
     if Bandwidth == None:
@@ -82,7 +83,7 @@ def upload_neteval():
 
         if cursor_select.rowcount == 0:
             cursor_insert = g.conn.execute(
-                'INSERT INTO neteval(macid, time, bandwidth, latency, device_id, location) VALUES (%s, %s, %s, %s)',
+                'INSERT INTO neteval(macid, time, bandwidth, latency, device_id, location) VALUES (%s, %s, %s, %s, %s, %s)',
                 Macaddr, time, Bandwidth, Latency, device_id, Location)
 
     except Exception as e:
