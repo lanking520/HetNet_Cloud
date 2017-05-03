@@ -66,6 +66,7 @@ def upload_neteval():
     Latency = neteval_data['Latency']
     Bandwidth = neteval_data['Bandwidth']
     Location = neteval_data['Location']
+    device_id = neteval_data['device_id']
 
     # Check if Bandwidth null
     if Bandwidth == None:
@@ -76,12 +77,13 @@ def upload_neteval():
     try:
 
         # First test if already exists using macid
-        cursor_select = g.conn.execute('SELECT * FROM neteval WHERE macid = %s', Macaddr)
+        cursor_select = g.conn.execute('SELECT * FROM neteval WHERE macid = %s AND device_id = %s AND location = %s',
+                                       Macaddr, device_id, Location)
 
         if cursor_select.rowcount == 0:
             cursor_insert = g.conn.execute(
-                'INSERT INTO neteval(macid, time, bandwidth, latency) VALUES (%s, %s, %s, %s)',
-                Macaddr, time, Bandwidth, Latency)
+                'INSERT INTO neteval(macid, time, bandwidth, latency, device_id, location) VALUES (%s, %s, %s, %s)',
+                Macaddr, time, Bandwidth, Latency, device_id, Location)
 
     except Exception as e:
         print e
