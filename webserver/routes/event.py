@@ -53,7 +53,7 @@ def get_macid_by_pred_by_loc():
 @routes.route('/event/getmacidbyprefbyuidloc', methods=['GET'])
 def get_macid_by_pref_by_uid_loc():
     """
-    get macid by uid, loc
+    get macid by uid, device_id, loc
     :return: {
         "macid": macid
     }
@@ -104,6 +104,7 @@ def set_app_pref():
     loc = params['location']
     time = params['time']
     pref = params['preference']
+    user_id = "test@columbia.edu"
 
 
     try:
@@ -117,8 +118,8 @@ def set_app_pref():
                                        uid, loc, device_id)
         if cursor_select.rowcount == 0:
             cursor_insert = g.conn.execute(
-                'INSERT INTO apppref(uid, device_id, location, preference, time) VALUES(%s, %s, %s, %s, %s)',
-                uid, device_id, loc, pref, time)
+                'INSERT INTO apppref(uid, device_id, location, preference, time, user_id) VALUES(%s, %s, %s, %s, %s, %s)',
+                uid, device_id, loc, pref, time, user_id)
         else:
             for row in cursor_select:
                 row['preferece'] = pref
