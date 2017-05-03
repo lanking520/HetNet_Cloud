@@ -64,6 +64,11 @@ def upload_neteval():
     Bandwidth = neteval_data['Bandwidth']
     Location = neteval_data['Location']
 
+    # Check if Bandwidth null
+    if Bandwidth == None:
+        response_json = {"Status": "Failure"}
+        return Response(response=json.dumps(response_json), status=400, mimetype="application/json")
+
     # Insert into network
     try:
 
