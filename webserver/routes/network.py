@@ -34,12 +34,12 @@ def upload_network():
                 continue
 
             # Find if network already exists in database
-            cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE macid = %s AND location = %s',
-                                           network["macid"], location)
+            cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE ssid = %s AND location = %s',
+                                           network["ssid"], location)
             if cursor_select.rowcount == 0:
                 cursor_insert = g.conn.execute(
-                    'INSERT INTO networkdata(macid, ssid, bandwidth, security, location, avgss, device_id, time) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                    network['macid'], network["ssid"], network["bandwidth"],  network["security"],
+                    'INSERT INTO networkdata(macid, ssid, security, location, avgss, device_id, time) VALUES(%s, %s, %s, %s, %s, %s, %s)',
+                    network['macid'], network["ssid"], network["security"],
                     location, network["avgss"], device_id, time)
             else:
                 pass
