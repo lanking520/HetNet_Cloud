@@ -38,6 +38,11 @@ def get_macid_by_pref_by_uid_loc():
             cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.latency = (SELECT MIN(latency) FROM neteval) LIMIT 1')
             for row in cursor_select:
                 results["macid"] = row["macid"]
+        else:
+            cursor_select = g.conn.execute('SELECT macid FROM networkdata WHERE ssid = %s AND location = %s',
+                                           pref, loc_param)
+            for row in cursor_select:
+                results["macid"] = row["macid"]
 
         return Response(response=json.dumps(results), status=200, mimetype="application/json")
 
@@ -90,17 +95,47 @@ def set_app_pref():
         return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
 
 
-# @routes.route('/event/getmacidbyprefbyloc', methods = ['GET'])
-# def get_macid_by_pref_by_loc():
-#
-#     # Get parameters
-#     user_id = request.args.get('user_id')
-#     device_id = request.args.get('device_id')
-#     location = request.args.get('location')
-#
-#     try:
-#         # Find preference based on user_id, device_id and location
-#         cursor_select = g.conn.execute()
+@routes.route('/event/getmacidbyprefbyloc', methods = ['GET'])
+def get_macid_by_pref_by_loc():
+
+    # Get parameters
+    user_id = request.args.get('user_id')
+    device_id = request.args.get('device_id')
+    location = request.args.get('location')
+
+    try:
+        # Find preference based on user_id, device_id and location
+        cursor_select = g.conn.execute('SELECT preference FROM loc_pref WHERE user_id = %s AND device_id = %s AND location = %s',
+                                       user_id, device_id, location)
+
+        pref = ""
+        for row in cursor_select:
+            pref = row['preference']
+
+
+        results = {}
+        if pref == "highest bandwidth":
+            cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.bandwidth = (SELECT MAX(bandwidth) FROM neteval) LIMIT 1')
+            for row in cursor_select:
+                results["macid"] = row["macid"]
+        elif pref == "lowest latency":
+            cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.latency = (SELECT MIN(latency) FROM neteval) LIMIT 1')
+            for row in cursor_select:
+                results["macid"] = row["macid"]
+        else:
+            cursor_select = g.conn.execute('SELECT macid FROM networkdata WHERE ssid = %s AND location = %s',
+                                           pref, location)
+            for row in cursor_select:
+                results["macid"] = row["macid"]
+
+        return Response(response=json.dumps(results), status=200, mimetype="application/json")
+
+
+    except Exception as e:
+        print e
+
+        response_json = {"Status": "Failure"}
+        return Response(response=json.dumps(response_json), status=400, mimetype="application/json")
 
 @routes.route('/event/setlocpref', methods = ['POST'])
 def set_loc_pref():
