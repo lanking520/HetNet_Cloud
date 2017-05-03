@@ -38,8 +38,8 @@ def upload_network():
                                            network["macid"], location)
             if cursor_select.rowcount == 0:
                 cursor_insert = g.conn.execute(
-                    'INSERT INTO networkdata(macid, ssid, bandwidth, latency, security, location, avgss, device_id, time) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                    network['macid'], network["ssid"], network["bandwidth"], network['latency'], network["security"],
+                    'INSERT INTO networkdata(macid, ssid, bandwidth, security, location, avgss, device_id, time) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                    network['macid'], network["ssid"], network["bandwidth"],  network["security"],
                     location, network["avgss"], device_id, time)
             else:
                 pass
