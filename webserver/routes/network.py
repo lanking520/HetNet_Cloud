@@ -459,6 +459,35 @@ def get_all_ssid():
         return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
 
 
+@routes.route('/network/getalldevice', methods=['GET'])
+def get_all_device():
+    """
+    get all device_id
+    :return: {
+        "device_id": []
+    }
+    """
+
+    try:
+
+        cursor_select = g.conn.execute('SELECT DISTINCT device_id FROM networkdata')
+
+        results = {}
+        results["device_id"] = []
+
+        for row in cursor_select:
+            results["device_id"].append({
+                'name': row['device_id']
+            })
+
+        return Response(response=json.dumps(results), status=200, mimetype="application/json")
+
+    except Exception as e:
+        print e
+
+        response_json = {"Status": "Failure"}
+        return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
+
 @routes.route('/network/avgss', methods=['GET'])
 def get_all_avgss():
     try:

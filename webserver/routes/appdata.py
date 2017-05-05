@@ -95,6 +95,39 @@ def get_all_app_data():
         return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
 
 
+@routes.route('/network/getalluid', methods=['GET'])
+def get_all_uid():
+    """
+    get all uid
+    :return: {
+        "uid": []
+    }
+    """
+
+    try:
+
+        cursor_select = g.conn.execute('SELECT DISTINCT application_package FROM appdata')
+
+        results = {}
+        results["uid"] = []
+
+        for row in cursor_select:
+            results["uid"].append({
+                'name': row['application_package']
+            })
+
+        return Response(response=json.dumps(results), status=200, mimetype="application/json")
+
+    except Exception as e:
+        print e
+
+        response_json = {"Status": "Failure"}
+        return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
+
+
+
+
+
 @routes.route('/appdata/bydeviceid', methods=['GET'])
 def get_appdata_by_device_id():
     """
