@@ -16,7 +16,8 @@ def get_macid_by_pref_by_uid_loc():
 
     uid_param = request.args.get('uid')
     device_id_param = request.args.get('device_id')
-    loc_param = request.args.get('location')
+    loc_param = request.args.get('location')  # "lng, lat"
+    net_param = request.args.get('curr_net')
 
     try:
         cursor_select = g.conn.execute('SELECT preference FROM apppref WHERE uid = %s AND location = %s AND device_id = %s',
@@ -99,14 +100,15 @@ def set_app_pref():
 def get_macid_by_pref_by_loc():
 
     # Get parameters
-    user_id = request.args.get('user_id')
+    # user_id = request.args.get('user_id')
     device_id = request.args.get('device_id')
     location = request.args.get('location')
+    curr_net = request.args.get('curr_net')
 
     try:
         # Find preference based on user_id, device_id and location
-        cursor_select = g.conn.execute('SELECT preference FROM loc_pref WHERE user_id = %s AND device_id = %s AND location = %s',
-                                       user_id, device_id, location)
+        cursor_select = g.conn.execute('SELECT preference FROM loc_pref WHERE device_id = %s AND location = %s',
+                                       device_id, location)
 
         pref = ""
         for row in cursor_select:
