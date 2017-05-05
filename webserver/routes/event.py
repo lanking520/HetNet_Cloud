@@ -130,7 +130,7 @@ def get_macid_by_pref_by_loc():
             for row in cursor_select:
                 results["macid"] = row["macid"]
 
-        return Response(response=json.dumps(results), status=200, mimetype="application/json")
+        return Response(response=json.dumps({"Status": "Success", "result": results), status=200, mimetype="application/json")
 
 
     except Exception as e:
