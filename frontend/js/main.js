@@ -1,6 +1,6 @@
 /// </// <reference path="angular.js" />
-
-var homeApp = angular.module("homeModule", ['ngMap']);
+/// </// <reference path="angular-animate.js" />
+var homeApp = angular.module("homeModule", ['ngMap','ngAnimate','ngSanitize','ui.bootstrap']);
 homeApp.controller("homeController", homeController);
 homeApp.service("httpService", httpService);
 
@@ -116,11 +116,40 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         }
         vm.markerClusterer = new MarkerClusterer(vm.map, dynMarkers, {});
     }
+
+    $scope.getpos = function(event) {
+      $scope.Lnglat = [event.latLng.lng(),event.latLng.lat()];
+      vm.clickCluster.clearMarkers();
+      //httpService.getAllSSID(Lnglat[0],Lnglat[1]).then(function (response) {$scope.currSSID = response.data.ssid;});
+      var marker = new google.maps.Marker({
+        position: event.latLng, 
+        map: vm.map});
+      vm.clickCluster = new MarkerClusterer(vm.map,[marker],{});
+      $scope.hideDecision = false;
+      // TODO: Add decision API here to show:
+    };
+
+    //$scope.updateSSID = function(network){$scope.currNet = network;}
+    $scope.updateDevice = function(device){
+        $scope.currDev = device;
+    }
+    $scope.updateUid = function(uid){
+        $scope.curru = uid;
+        // TODO: Add Decision API here to show:
+    }
     // Init network data
     $scope.networkDataInit = function () {
+       vm.clickCluster = new MarkerClusterer(vm.map,[], {});
+       $scope.hideDecision = true;
        mapinit();
        getlocation();
        setTimeout(function(){$scope.$apply(assignNetworks());}, 2000);
+       httpService.getAllDevice().then(function(response){
+          $scope.currDevice = response.data.device_id;
+       });
+       httpService.getAlluid().then(function(response){
+          $scope.currUid = response.data.uid;
+       });
     };
 
     // Init application data
@@ -536,6 +565,25 @@ function httpService($http) {
             url: "http://maps.googleapis.com/maps/api/geocode/json",
             method: "GET",
             params: {latlng: Longtitude + "," + Latitude}
+        });
+    }
+    this.getAllSSID = function(Longtitude, Latitude){
+        return $http({
+            url: preUrl +"/network/getallssid",
+            medthod: "GET",
+            params: {location: Longtitude+","+Latitude }
+        });
+    }
+    this.getAlluid = function(){
+        return $http({
+            url: preUrl +"/network/getalluid",
+            medthod: "GET"
+        });
+    }
+    this.getAllDevice = function(){
+        return $http({
+            url: preUrl +"/network/getalldevice",
+            medthod: "GET"
         });
     }
 }
