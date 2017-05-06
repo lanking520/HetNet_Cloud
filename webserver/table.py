@@ -25,6 +25,11 @@ class table:
 
 	appdata_drop_pk = "alter table drop constraint appdata_pkey from appdata;"
 	appdata_add_pk = "alter table add constraint appdata_pkey primary key(uid, device_id, time);"
+
+
+	# Join table
+    join_two_table = "select N2.device_id, N1.ssid, N1.macid, N2.bandwidth, N2.latency, N1.security, N1.avgss, N2.time, N1.location from networkdata N1, neteval N2 where N1.macid = N2.macid"
+
 	"""
 	psql \
    --host=hetpot.c8dtasexwftg.us-east-1.rds.amazonaws.com \
