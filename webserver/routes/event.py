@@ -16,7 +16,9 @@ def get_macid_by_pref_by_uid_loc():
 
     uid_param = request.args.get('uid')
     device_id_param = request.args.get('device_id')
-    loc_param = request.args.get('location')  # "lng, lat"
+    location = network_data["Location"].split(",")
+    loc_param = str(location[0][:8]) + ',' + str(location[1][:7])
+    # loc_param = request.args.get('location')  # "lng, lat"
     net_param = request.args.get('curr_net')
 
     try:
@@ -35,15 +37,24 @@ def get_macid_by_pref_by_uid_loc():
             cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.bandwidth = (SELECT MAX(bandwidth) FROM neteval) LIMIT 1')
             for row in cursor_select:
                 results["macid"] = row["macid"]
+            cursor_select = g.conn.execute('SELECT ssid FROM networkdata WHERE macid = %s',
+                                           results["macid"])
+            for row in cursor_select:
+                results["ssid"] = row["ssid"]
         elif pref == "lowest latency":
             cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.latency = (SELECT MIN(latency) FROM neteval) LIMIT 1')
             for row in cursor_select:
                 results["macid"] = row["macid"]
+            cursor_select = g.conn.execute('SELECT ssid FROM networkdata WHERE macid = %s',
+                                           results["macid"])
+            for row in cursor_select:
+                results["ssid"] = row["ssid"]
         else:
             cursor_select = g.conn.execute('SELECT macid FROM networkdata WHERE ssid = %s AND location = %s',
                                            pref, loc_param)
             for row in cursor_select:
                 results["macid"] = row["macid"]
+            results["ssid"] = pref
 
         return Response(response=json.dumps(results), status=200, mimetype="application/json")
 
