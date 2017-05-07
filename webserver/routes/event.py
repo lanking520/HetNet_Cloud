@@ -39,9 +39,9 @@ def get_macid_by_pref_by_uid_loc():
         print pref
 
         if pref == "highest bandwidth":
-            # print "high"
-            cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.bandwidth = (SELECT MAX(bandwidth) AND location = %s FROM neteval) LIMIT 1',
-                                           loc_param)
+            print "high"
+            cursor_select = g.conn.execute('SELECT macid FROM neteval WHERE bandwidth = (SELECT MAX(L.bandwidth) FROM (SELECT bandwidth FROM neteval WHERE location = %s) AS L) AND location = %s LIMIT 1',
+                                           loc_param, loc_param)
             for row in cursor_select:
                 results["macid"] = row["macid"]
             # print results["macid"]
@@ -51,9 +51,9 @@ def get_macid_by_pref_by_uid_loc():
                 results["ssid"] = row["ssid"]
             # print results["ssid"]
         elif pref == "lowest latency":
-            # print "low"
-            cursor_select = g.conn.execute('SELECT N.macid FROM neteval N WHERE N.latency = (SELECT MIN(latency) AND location = %s FROM neteval) LIMIT 1',
-                                           loc_param)
+            print "low"
+            cursor_select = g.conn.execute('SELECT macid FROM neteval WHERE latency = (SELECT MIN(L.latency) FROM (SELECT latency FROM neteval WHERE location = %s) AS L) AND location = %s LIMIT 1',
+                                           loc_param, loc_param)
             for row in cursor_select:
                 results["macid"] = row["macid"]
             # print results["macid"]
@@ -63,7 +63,7 @@ def get_macid_by_pref_by_uid_loc():
                 results["ssid"] = row["ssid"]
             # print results["ssid"]
         else:
-            # print "else"
+            print "else"
             cursor_select = g.conn.execute('SELECT macid FROM networkdata WHERE ssid = %s AND location = %s',
                                            pref, location)
             for row in cursor_select:
