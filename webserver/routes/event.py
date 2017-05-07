@@ -98,6 +98,10 @@ def set_app_pref():
     pref = params['preference']
     user_id = params['user_id']
 
+    index = uid.find(":")
+    if index >= 0:
+        uid = uid[:index]
+
 
     try:
         # if pref != "highest bandwidth" and pref != "lowest latency":
