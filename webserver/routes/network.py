@@ -106,7 +106,7 @@ def get_all_network():
     """
 
     try:
-        cursor_select = g.conn.execute('SELECT * FROM networkdata ORDER BY time DESC LIMIT 100');
+        cursor_select = g.conn.execute('SELECT * FROM networks ORDER BY time DESC LIMIT 100');
 
         results = {}
         results["networks"] = []
@@ -120,8 +120,8 @@ def get_all_network():
                 "avgss": int(row['avgss']),
                 "device_id": row['device_id'],
                 "time": row['time'],
-                "latency": row['latency'],
-                "macid": row['macid']
+                # "latency": row['latency'],
+                # "macid": row['macid']
             }
 
             results["networks"].append(network)
@@ -148,7 +148,7 @@ def get_network_by_device_id():
     device_id_param = request.args.get('deviceid')
 
     try:
-        cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE device_id = %s',
+        cursor_select = g.conn.execute('SELECT * FROM networks WHERE device_id = %s',
                                        device_id_param)
 
         results = {}
@@ -164,8 +164,8 @@ def get_network_by_device_id():
                 "avgss": int(row['avgss']),
                 "device_id": row['device_id'],
                 "time": row['time'],
-                "latency": row['latency'],
-                "macid": row['macid']
+                # "latency": row['latency'],
+                # "macid": row['macid']
             }
 
             results["networks"].append(network)
@@ -192,7 +192,7 @@ def get_network_by_ssid():
     ssid_param = request.args.get('ssid')
 
     try:
-        cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE ssid = %s',
+        cursor_select = g.conn.execute('SELECT * FROM networks WHERE ssid = %s',
                                        ssid_param)
 
         results = {}
@@ -208,8 +208,8 @@ def get_network_by_ssid():
                 "avgss": int(row['avgss']),
                 "device_id": row['device_id'],
                 "time": row['time'],
-                "latency": row['latency'],
-                "macid": row['macid']
+                # "latency": row['latency'],
+                # "macid": row['macid']
             }
 
             results["networks"].append(network)
@@ -236,7 +236,7 @@ def get_network_by_location():
     location_param = request.args.get('location')
 
     try:
-        cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE location = %s',
+        cursor_select = g.conn.execute('SELECT * FROM networks WHERE location = %s',
                                        location_param)
 
         results = {}
@@ -251,8 +251,8 @@ def get_network_by_location():
                 "avgss": int(row['avgss']),
                 "device_id": row['device_id'],
                 "time": row['time'],
-                "latency": row['latency'],
-                "macid": row['macid']
+                # "latency": row['latency'],
+                # "macid": row['macid']
             }
 
             results["networks"].append(network)
@@ -279,7 +279,7 @@ def get_avg_bandwidth_by_location():
 
     try:
 
-        cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE location = %s',
+        cursor_select = g.conn.execute('SELECT * FROM networks WHERE location = %s',
                                        location_param)
 
         bandwidth_sum = 0.0
@@ -313,7 +313,7 @@ def get_avg_bandwidth_by_ssid():
 
     try:
 
-        cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE ssid = %s',
+        cursor_select = g.conn.execute('SELECT * FROM networks WHERE ssid = %s',
                                        ssid_param)
 
         bandwidth_sum = 0.0
@@ -349,7 +349,7 @@ def get_avg_signal_strength_by_location():
 
     try:
 
-        cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE location = %s',
+        cursor_select = g.conn.execute('SELECT * FROM networks WHERE location = %s',
                                        location_param)
 
         avgss_sum = 0.0
@@ -383,7 +383,7 @@ def get_avg_signal_strength_by_ssid():
 
     try:
 
-        cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE ssid = %s',
+        cursor_select = g.conn.execute('SELECT * FROM networks WHERE ssid = %s',
                                        ssid_param)
 
         avgss_sum = 0.0
@@ -492,7 +492,7 @@ def get_all_device():
 def get_all_avgss():
     try:
 
-        cursor_select = g.conn.execute('SELECT DISTINCT ssid FROM networkdata')
+        cursor_select = g.conn.execute('SELECT DISTINCT ssid FROM networks')
 
         ssids = []
         avgsss = []
@@ -502,7 +502,7 @@ def get_all_avgss():
 
         for i in range(len(ssids)):
 
-            cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE ssid = %s LIMIT 5',
+            cursor_select = g.conn.execute('SELECT * FROM networks WHERE ssid = %s LIMIT 5',
                                            ssids[i])
 
             avgss_sum = 0.0
@@ -529,7 +529,7 @@ def get_all_avgss():
 def get_all_bandwidth():
     try:
 
-        cursor_select = g.conn.execute('SELECT DISTINCT ssid FROM networkdata')
+        cursor_select = g.conn.execute('SELECT DISTINCT ssid FROM networks')
 
         ssids = []
         bands = []
@@ -539,7 +539,7 @@ def get_all_bandwidth():
 
         for i in range(len(ssids)):
 
-            cursor_select = g.conn.execute('SELECT * FROM networkdata WHERE ssid = %s LIMIT 5',
+            cursor_select = g.conn.execute('SELECT * FROM networks WHERE ssid = %s LIMIT 5',
                                            ssids[i])
 
             bandwidth_sum = 0.0
