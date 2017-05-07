@@ -459,6 +459,41 @@ def get_all_ssid():
         return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
 
 
+@routes.route('/network/getallssidbyloc', methods=['GET'])
+def get_all_ssid_by_loc():
+    """
+    get all ssid
+    :return: {
+        "ssid": []
+    }
+    """
+
+    location = request.args.get('location').split(",")
+    location = str(location[0][:8]) + ',' + str(location[1][:7])
+    loc_param = request.args.get('location')
+
+    try:
+
+        cursor_select = g.conn.execute('SELECT DISTINCT ssid FROM networkdata WHERE location = %s',
+                                       location)
+
+        results = {}
+        results["ssid"] = []
+
+        for row in cursor_select:
+            results["ssid"].append({
+                'name': row['ssid']
+            })
+
+        return Response(response=json.dumps(results), status=200, mimetype="application/json")
+
+    except Exception as e:
+        print e
+
+        response_json = {"Status": "Failure"}
+        return Response(response=json.dumps(response_json), status=500, mimetype="application/json")
+
+
 @routes.route('/network/getalldevice', methods=['GET'])
 def get_all_device():
     """
