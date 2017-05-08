@@ -94,7 +94,7 @@ def set_app_pref():
     uid = params['uid']
     device_id = params['device_id']
     loc = params['location']
-    location = str(location[0][:8]) + ',' + str(location[1][:7])
+    location = str(loc[0][:8]) + ',' + str(loc[1][:7])
     time = params['time']
     pref = params['preference']
     user_id = params['user_id']
