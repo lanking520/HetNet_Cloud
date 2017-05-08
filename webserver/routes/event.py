@@ -21,6 +21,10 @@ def get_macid_by_pref_by_uid_loc():
     # loc_param = request.args.get('location')
     # net_param = request.args.get('curr_net')
 
+    index = uid_param.find(":")
+    if index >= 0:
+        uid_param = uid_param[:index]
+
     flag = 0
 
     # print loc_param
