@@ -29,8 +29,12 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     $scope.appdataReverseSort = false;
 
     $scope.desicionMakerHideDecision = true;
+    $scope.showNetworkSwitchDecision = true;
     $scope.currDev = "";
     $scope.curru = "";
+
+    $scope.ssidToSwitch = "";
+    $scope.macidToSwitch = "";
 
     // switch to main
     $scope.switchMain = function () {
@@ -162,8 +166,11 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         console.log("------------");
 
         httpService.getMacIdByPrefByLoc(deviceID, location).then(function(response) {
+            $scope.showNetworkSwitchDecision = false;
             console.log(response.data.macid);
             console.log(response.data.ssid);
+            $scope.ssidToSwitch = response.data.ssid;
+            $scope.macidToSwitch = response.data.macid;
         });        
     }
 
@@ -184,6 +191,8 @@ function homeController($scope, $http, $window, httpService, NgMap) {
             httpService.getMacidByPrefByUidLoc(deviceID, uid, location).then(function(response) {
                 console.log(response.data.macid);
                 console.log(response.data.ssid);
+                $scope.ssidToSwitch = response.data.ssid;
+                $scope.macidToSwitch = response.data.macid;
             });
         }
     };
