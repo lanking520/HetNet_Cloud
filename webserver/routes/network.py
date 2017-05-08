@@ -418,7 +418,7 @@ def get_all_locations():
         results = {}
         results["locations"] = []
 
-        cursor_select = g.conn.execute('SELECT DISTINCT location FROM networkdata')
+        cursor_select = g.conn.execute('SELECT DISTINCT location FROM networks')
         for row in cursor_select:
             results["locations"].append(row[0])
 
