@@ -180,7 +180,7 @@ def get_macid_by_pref_by_loc():
             # print results["macid"]
             results["ssid"] = pref
 
-            return Response(response=json.dumps(results), status=200, mimetype="application/json")
+        return Response(response=json.dumps(results), status=200, mimetype="application/json")
 
 
     except Exception as e:

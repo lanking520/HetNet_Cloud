@@ -133,7 +133,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     }
 
     $scope.getpos = function(event) {
-      $scope.Lnglat = [event.latLng.lng(), event.latLng.lat()];
+      $scope.Lnglat = [event.latLng.lng().toFixed(4).toString(), event.latLng.lat().toFixed(4).toString()];
       if (vm.decisionClickCluster != undefined) {
         vm.decisionClickCluster.clearMarkers();
       }
@@ -151,31 +151,37 @@ function homeController($scope, $http, $window, httpService, NgMap) {
 
     //$scope.updateSSID = function(network){$scope.currNet = network;}
     $scope.updateDevice = function(device){
-        $scope.currDev = device;
+        $scope.currDev = device.name;
 
-        if ($scope.curru != "") {
-            // Get parameters needed for find the network to switch
-            var deviceID = $scope.currDev;
-            var location = $scope.Lnglat[0].toFixed(4).toString() + "," + $scope.Lnglat[1].toFixed(4).toString();
-            var loc_param = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
+        // Get parameters needed for find the network to switch
+        var deviceID = $scope.currDev;
+        var location = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
 
-            httpService.getMacIdByPrefByLoc(deviceID, location, loc_param).then(function(response) {
-                console.log(response.data.macid);
-                console.log(response.data.ssid);
-            });
-        }        
+        console.log(deviceID);
+        console.log(location);
+        console.log("------------");
+
+        httpService.getMacIdByPrefByLoc(deviceID, location).then(function(response) {
+            console.log(response.data.macid);
+            console.log(response.data.ssid);
+        });        
     }
 
     $scope.updateUid = function(uid){
-        $scope.curru = uid;
+        $scope.curru = uid.name;
+
             
         if ($scope.currDev != "") {
             var deviceID = $scope.currDev;
             var uid = $scope.curru;
-            var location = $scope.Lnglat[0].toFixed(4).toString() + "," + $scope.Lnglat[1].toFixed(4).toString();
-            var loc_param = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
+            var location = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
 
-            httpService.getMacidByPrefByUidLoc(deviceID, uid, location, loc_param).then(function(response) {
+            console.log(deviceID);
+            console.log(uid);
+            console.log(location);
+            console.log("----------------");
+
+            httpService.getMacidByPrefByUidLoc(deviceID, uid, location).then(function(response) {
                 console.log(response.data.macid);
                 console.log(response.data.ssid);
             });
@@ -649,27 +655,25 @@ function httpService($http) {
         });
     }
 
-    this.getMacidByPrefByUidLoc = function(deviceID_p, uid_p, location_p, loc_param_p) {
+    this.getMacidByPrefByUidLoc = function(deviceID_p, uid_p, location_p) {
         return $http({
             url: preUrl + "/event/getmacidbyprefbyuidloc",
             method: "GET",
             params: {
-                deviceID: deviceID_p,
+                device_id: deviceID_p,
                 uid: uid_p,
-                location: location_p,
-                loc_param: loc_param_p
+                location: location_p
             }
         });
     }
 
-    this.getMacIdByPrefByLoc = function(deviceID_p, location_p, loc_param_p) {
+    this.getMacIdByPrefByLoc = function(deviceID_p, location_p) {
         return $http({
             url: preUrl + "/event/getmacidbyprefbyloc",
             method: "GET",
             params: {
-                deviceID: deviceID_p,
-                location: location_p,
-                loc_param: loc_param_p
+                device_id: deviceID_p,
+                location: location_p
             }
         });
     }
