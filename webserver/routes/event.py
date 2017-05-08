@@ -93,8 +93,8 @@ def set_app_pref():
     # params = json.dumps(params)
     uid = params['uid']
     device_id = params['device_id']
-    loc = params['location']
-    location = str(loc[0][:8]) + ',' + str(loc[1][:7])
+    loc = params['location'].split(',')
+    loc = str(loc[0][:8]) + ',' + str(loc[1][:7])
     time = params['time']
     pref = params['preference']
     user_id = params['user_id']
