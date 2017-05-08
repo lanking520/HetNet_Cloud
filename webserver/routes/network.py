@@ -66,6 +66,7 @@ def upload_neteval():
     Latency = float(neteval_data['Latency'])
     Bandwidth = float(neteval_data['Bandwidth'])
     Location = neteval_data['Location']
+    location = str(location[0][:8]) + ',' + str(location[1][:7])
     device_id = neteval_data['device_id']
 
 

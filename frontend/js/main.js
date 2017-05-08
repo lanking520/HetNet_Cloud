@@ -28,6 +28,10 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     $scope.appdataOrderByField = "time";
     $scope.appdataReverseSort = false;
 
+    $scope.desicionMakerHideDecision = true;
+    $scope.currDev = "";
+    $scope.curru = "";
+
     // switch to main
     $scope.switchMain = function () {
         $scope.homeView = "../home/main.html";
@@ -53,6 +57,11 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         $scope.homeView = "../home/applicationDataVisualization.html";
     };
 
+    // switch to decision maker
+    $scope.switchDecisionMaker = function () {
+        $scope.homeView = "../home/decisionMaker.html";
+    }
+
     // switch to system data
     $scope.switchSystemData = function () {
         $scope.homeView = "../home/systemData.html";
@@ -64,11 +73,16 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     };
 
     function mapinit(){
-        NgMap.getMap().then(function(map) {
+        NgMap.getMap({id: 'networkDataMap'}).then(function(map) {
             vm.map = map;
         });
-        //vm.markerClusterer = new MarkerClusterer(vm.map, [], {});
     };
+
+    function decisionMakerMapInit() {
+        NgMap.getMap({id: 'decisionMakerMap'}).then(function(map) {
+            vm.decisionMakerMap = map;
+        });
+    }
 
     function getlocation(){
         vm.coord = [];
@@ -95,6 +109,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         });
     }
 
+
     function assignNetworks(){
         var dynMarkers = [];
         for (key in vm.coord) {
@@ -118,13 +133,18 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     }
 
     $scope.getpos = function(event) {
-      $scope.Lnglat = [event.latLng.lng(),event.latLng.lat()];
-      vm.clickCluster.clearMarkers();
+      $scope.Lnglat = [event.latLng.lng(), event.latLng.lat()];
+      if (vm.decisionClickCluster != undefined) {
+        vm.decisionClickCluster.clearMarkers();
+      }
+      //vm.clickCluster.clearMarkers();
       //httpService.getAllSSID(Lnglat[0],Lnglat[1]).then(function (response) {$scope.currSSID = response.data.ssid;});
       var marker = new google.maps.Marker({
         position: event.latLng, 
-        map: vm.map});
-      vm.clickCluster = new MarkerClusterer(vm.map,[marker],{});
+        map: vm.decisionMakerMap});
+      console.log("NEw marker");
+      vm.decisionClickCluster = new MarkerClusterer(vm.decisionMakerMap,[marker],{});
+      console.log("Add marker");
       $scope.hideDecision = false;
       // TODO: Add decision API here to show:
     };
@@ -132,15 +152,57 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     //$scope.updateSSID = function(network){$scope.currNet = network;}
     $scope.updateDevice = function(device){
         $scope.currDev = device;
+
+        if ($scope.curru != "") {
+            // Get parameters needed for find the network to switch
+            var deviceID = currDev;
+            var location = Lnglat[0].toFixed(4).toString() + "," + Lnglat[1].toFixed(4).toString();
+            var loc_param = Lnglat[0] + "," + Lnglat[1];
+
+            httpService.getMacIdByPrefByLoc(deviceID, location, loc_param).then(function(response) {
+                console.log(response.data.macid);
+                console.log(response.data.ssid);
+            });
+        }        
     }
+
     $scope.updateUid = function(uid){
         $scope.curru = uid;
-        // TODO: Add Decision API here to show:
-    }
+            
+        if ($scope.currDev != "") {
+            var deviceID = currDev;
+            var uid = curru;
+            var location = Lnglat[0].toFixed(4).toString() + "," + Lnglat[1].toFixed(4).toString();
+            var loc_param = Lnglat[0] + "," + Lnglat[1];
+
+            httpService.getMacidByPrefByUidLoc(deviceID, uid, location, loc_param).then(function(response) {
+                console.log(response.data.macid);
+                console.log(response.data.ssid);
+            });
+        }
+    };
+
+    $scope.decisionMakerInit = function () {
+        // vm.clickCluster = new MarkerClusterer(vm.map, [], {});
+        // $scope.hideDecision = true;
+        decisionMakerMapInit();
+        // getlocation();
+        // setTimeout(function () {
+        //     $scope.$apply(assignNetworks());
+        // }, 2000);
+
+        httpService.getAllDevice().then(function(response) {
+            $scope.currDevice = response.data.device_id;
+        });
+
+        httpService.getAlluid().then(function(response) {
+            $scope.currUid = response.data.uid;
+        });
+    };
+
     // Init network data
     $scope.networkDataInit = function () {
        vm.clickCluster = new MarkerClusterer(vm.map,[], {});
-       $scope.hideDecision = true;
        mapinit();
        getlocation();
        setTimeout(function(){$scope.$apply(assignNetworks());}, 2000);
@@ -584,6 +646,31 @@ function httpService($http) {
         return $http({
             url: preUrl +"/network/getalldevice",
             medthod: "GET"
+        });
+    }
+
+    this.getMacidByPrefByUidLoc = function(deviceID_p, uid_p, location_p, loc_param_p) {
+        return $http({
+            url: preUrl + "/event/getmacidbyprefbyuidloc",
+            method: "GET",
+            params: {
+                deviceID: deviceID_p,
+                uid: uid_p,
+                location: location_p,
+                loc_param: loc_param_p
+            }
+        });
+    }
+
+    this.getMacIdByPrefByLoc = function(deviceID, location, loc_param_p) {
+        return $http({
+            url: preUrl + "/event/getmacidbyprefbyloc",
+            method: "GET",
+            params: {
+                deviceID: deviceID_p,
+                location: location_p,
+                loc_param: loc_param_p
+            }
         });
     }
 }

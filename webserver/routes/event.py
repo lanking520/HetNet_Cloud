@@ -19,7 +19,7 @@ def get_macid_by_pref_by_uid_loc():
     location = request.args.get('location').split(",")
     location = str(location[0][:8]) + ',' + str(location[1][:7])
     loc_param = request.args.get('location')  # "lng, lat"
-    net_param = request.args.get('curr_net')
+    # net_param = request.args.get('curr_net')
 
     flag = 0
 
@@ -94,6 +94,7 @@ def set_app_pref():
     uid = params['uid']
     device_id = params['device_id']
     loc = params['location']
+    location = str(location[0][:8]) + ',' + str(location[1][:7])
     time = params['time']
     pref = params['preference']
     user_id = params['user_id']
@@ -140,7 +141,7 @@ def get_macid_by_pref_by_loc():
     location = request.args.get('location').split(",")
     location = str(location[0][:8]) + ',' + str(location[1][:7])
     loc_param = request.args.get('location')
-    curr_net = request.args.get('curr_net')
+    # curr_net = request.args.get('curr_net')
 
     try:
         # Find preference based on user_id, device_id and location
@@ -195,6 +196,7 @@ def set_loc_pref():
     user_id = params['user_id']
     device_id = params['device_id']
     location = params['location']
+    location = str(location[0][:8]) + ',' + str(location[1][:7])
     time = params['time']
     pref = params['preference']
     location_name = params['location_name']
