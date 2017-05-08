@@ -155,9 +155,9 @@ function homeController($scope, $http, $window, httpService, NgMap) {
 
         if ($scope.curru != "") {
             // Get parameters needed for find the network to switch
-            var deviceID = currDev;
-            var location = Lnglat[0].toFixed(4).toString() + "," + Lnglat[1].toFixed(4).toString();
-            var loc_param = Lnglat[0] + "," + Lnglat[1];
+            var deviceID = $scope.currDev;
+            var location = $scope.Lnglat[0].toFixed(4).toString() + "," + $scope.Lnglat[1].toFixed(4).toString();
+            var loc_param = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
 
             httpService.getMacIdByPrefByLoc(deviceID, location, loc_param).then(function(response) {
                 console.log(response.data.macid);
@@ -170,10 +170,10 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         $scope.curru = uid;
             
         if ($scope.currDev != "") {
-            var deviceID = currDev;
-            var uid = curru;
-            var location = Lnglat[0].toFixed(4).toString() + "," + Lnglat[1].toFixed(4).toString();
-            var loc_param = Lnglat[0] + "," + Lnglat[1];
+            var deviceID = $scope.currDev;
+            var uid = $scope.curru;
+            var location = $scope.Lnglat[0].toFixed(4).toString() + "," + $scope.Lnglat[1].toFixed(4).toString();
+            var loc_param = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
 
             httpService.getMacidByPrefByUidLoc(deviceID, uid, location, loc_param).then(function(response) {
                 console.log(response.data.macid);
@@ -662,7 +662,7 @@ function httpService($http) {
         });
     }
 
-    this.getMacIdByPrefByLoc = function(deviceID, location, loc_param_p) {
+    this.getMacIdByPrefByLoc = function(deviceID_p, location_p, loc_param_p) {
         return $http({
             url: preUrl + "/event/getmacidbyprefbyloc",
             method: "GET",

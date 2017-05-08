@@ -195,7 +195,7 @@ def set_loc_pref():
 
     user_id = params['user_id']
     device_id = params['device_id']
-    location = params['location']
+    location = params['location'].split(',')
     location = str(location[0][:8]) + ',' + str(location[1][:7])
     time = params['time']
     pref = params['preference']
