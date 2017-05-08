@@ -11,12 +11,12 @@
 		<div class="box-body" ng-hide="decisionMakerHideDecision">
 			<div class="box-header">
 				<h3 class="box-title">
-					Decision Maker
+					Decision Maker -- {{ssidToSwitch}}
 				</h3>
 			</div>
 			<div class="box-body">
-				<p>Current Device: {{currDev.name}}
-				<br>Current UID: {{curru.name}}
+				<p>Current Device: {{currDev}}
+				<br>Current UID: {{curru}}
 				<br>Location: {{Lnglat[0]}},{{Lnglat[1]}}
 				</p>
 				<div class="input-group-btn" uib-dropdown>
@@ -40,7 +40,6 @@
 					</ul>
 				</div>
 				<p ng-hide="showNetworkSwitchDecision">
-					<br><span>SSID to Switch: {{ssidToSwitch}}</span>
 					<br><span>Mac Address to Switch: {{macidToSwitch}}</span>
 				</p>
 			</div>

@@ -149,29 +149,33 @@ function homeController($scope, $http, $window, httpService, NgMap) {
       console.log("NEw marker");
       vm.decisionClickCluster = new MarkerClusterer(vm.decisionMakerMap,[marker],{});
       console.log("Add marker");
-      $scope.hideDecision = false;
+      $scope.updateDevice(null);
+      $scope.$apply();
+      // $scope.hideDecision = false;
       // TODO: Add decision API here to show:
     };
 
     //$scope.updateSSID = function(network){$scope.currNet = network;}
     $scope.updateDevice = function(device){
-        $scope.currDev = device.name;
+        if(device != null){
+            $scope.currDev = device.name;
+        }
+        if($scope.currDev != null){
+            // Get parameters needed for find the network to switch
+            var deviceID = $scope.currDev;
+            var location = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
 
-        // Get parameters needed for find the network to switch
-        var deviceID = $scope.currDev;
-        var location = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
-
-        console.log(deviceID);
-        console.log(location);
-        console.log("------------");
-
-        httpService.getMacIdByPrefByLoc(deviceID, location).then(function(response) {
-            $scope.showNetworkSwitchDecision = false;
-            console.log(response.data.macid);
-            console.log(response.data.ssid);
-            $scope.ssidToSwitch = response.data.ssid;
-            $scope.macidToSwitch = response.data.macid;
-        });        
+            httpService.getMacIdByPrefByLoc(deviceID, location).then(function(response) {
+                $scope.showNetworkSwitchDecision = false;
+                if(response.data.ssid.length === 0){
+                    $scope.ssidToSwitch = "No Network Available!";
+                }
+                else{
+                    $scope.ssidToSwitch = response.data.ssid;
+                }
+                $scope.macidToSwitch = response.data.macid;
+            });    
+        }    
     }
 
     $scope.updateUid = function(uid){
@@ -191,6 +195,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
             httpService.getMacidByPrefByUidLoc(deviceID, uid, location).then(function(response) {
                 console.log(response.data.macid);
                 console.log(response.data.ssid);
+                console.log(response.data.ssid.length);
                 $scope.ssidToSwitch = response.data.ssid;
                 $scope.macidToSwitch = response.data.macid;
             });
