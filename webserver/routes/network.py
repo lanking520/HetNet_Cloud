@@ -15,7 +15,7 @@ def upload_network():
     networks = network_data["Networks"]
 
     location = network_data["Location"].split(",")
-    location = str(location[0][:8]) + ',' + str(location[1][:7])
+    location = str(location[0][:7]) + ',' + str(location[1][:6])
 
     device_id = network_data["device_id"]
     time = network_data["Time"]
@@ -66,7 +66,7 @@ def upload_neteval():
     Latency = float(neteval_data['Latency'])
     Bandwidth = float(neteval_data['Bandwidth'])
     Location = neteval_data['Location'].split(',')
-    location = str(Location[0][:8]) + ',' + str(Location[1][:7])
+    location = str(Location[0][:7]) + ',' + str(Location[1][:6])
     device_id = neteval_data['device_id']
 
 

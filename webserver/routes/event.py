@@ -17,7 +17,7 @@ def get_macid_by_pref_by_uid_loc():
     uid_param = request.args.get('uid')
     device_id_param = request.args.get('device_id')
     location = request.args.get('location').split(",")
-    location = str(location[0][:8]) + ',' + str(location[1][:7])
+    location = str(location[0][:7]) + ',' + str(location[1][:6])
     # loc_param = request.args.get('location')
     # net_param = request.args.get('curr_net')
 
@@ -94,7 +94,7 @@ def set_app_pref():
     uid = params['uid']
     device_id = params['device_id']
     loc = params['location'].split(',')
-    loc = str(loc[0][:8]) + ',' + str(loc[1][:7])
+    loc = str(loc[0][:7]) + ',' + str(loc[1][:6])
     time = params['time']
     pref = params['preference']
     user_id = params['user_id']
