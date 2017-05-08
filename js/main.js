@@ -1,6 +1,6 @@
 /// </// <reference path="angular.js" />
-
-var homeApp = angular.module("homeModule", ['ngMap']);
+/// </// <reference path="angular-animate.js" />
+var homeApp = angular.module("homeModule", ['ngMap','ngAnimate','ngSanitize','ui.bootstrap']);
 homeApp.controller("homeController", homeController);
 homeApp.service("httpService", httpService);
 
@@ -28,6 +28,14 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     $scope.appdataOrderByField = "time";
     $scope.appdataReverseSort = false;
 
+    $scope.desicionMakerHideDecision = true;
+    $scope.showNetworkSwitchDecision = true;
+    $scope.currDev = "";
+    $scope.curru = "";
+
+    $scope.ssidToSwitch = "";
+    $scope.macidToSwitch = "";
+
     // switch to main
     $scope.switchMain = function () {
         $scope.homeView = "../home/main.html";
@@ -53,6 +61,11 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         $scope.homeView = "../home/applicationDataVisualization.html";
     };
 
+    // switch to decision maker
+    $scope.switchDecisionMaker = function () {
+        $scope.homeView = "../home/decisionMaker.html";
+    }
+
     // switch to system data
     $scope.switchSystemData = function () {
         $scope.homeView = "../home/systemData.html";
@@ -64,11 +77,16 @@ function homeController($scope, $http, $window, httpService, NgMap) {
     };
 
     function mapinit(){
-        NgMap.getMap().then(function(map) {
+        NgMap.getMap({id: 'networkDataMap'}).then(function(map) {
             vm.map = map;
         });
-        //vm.markerClusterer = new MarkerClusterer(vm.map, [], {});
     };
+
+    function decisionMakerMapInit() {
+        NgMap.getMap({id: 'decisionMakerMap'}).then(function(map) {
+            vm.decisionMakerMap = map;
+        });
+    }
 
     function getlocation(){
         vm.coord = [];
@@ -95,6 +113,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         });
     }
 
+
     function assignNetworks(){
         var dynMarkers = [];
         for (key in vm.coord) {
@@ -116,11 +135,98 @@ function homeController($scope, $http, $window, httpService, NgMap) {
         }
         vm.markerClusterer = new MarkerClusterer(vm.map, dynMarkers, {});
     }
+
+    $scope.getpos = function(event) {
+      $scope.Lnglat = [event.latLng.lng().toFixed(4).toString(), event.latLng.lat().toFixed(4).toString()];
+      if (vm.decisionClickCluster != undefined) {
+        vm.decisionClickCluster.clearMarkers();
+      }
+      //vm.clickCluster.clearMarkers();
+      //httpService.getAllSSID(Lnglat[0],Lnglat[1]).then(function (response) {$scope.currSSID = response.data.ssid;});
+      var marker = new google.maps.Marker({
+        position: event.latLng, 
+        map: vm.decisionMakerMap});
+      console.log("NEw marker");
+      vm.decisionClickCluster = new MarkerClusterer(vm.decisionMakerMap,[marker],{});
+      console.log("Add marker");
+      $scope.hideDecision = false;
+      // TODO: Add decision API here to show:
+    };
+
+    //$scope.updateSSID = function(network){$scope.currNet = network;}
+    $scope.updateDevice = function(device){
+        $scope.currDev = device.name;
+
+        // Get parameters needed for find the network to switch
+        var deviceID = $scope.currDev;
+        var location = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
+
+        console.log(deviceID);
+        console.log(location);
+        console.log("------------");
+
+        httpService.getMacIdByPrefByLoc(deviceID, location).then(function(response) {
+            $scope.showNetworkSwitchDecision = false;
+            console.log(response.data.macid);
+            console.log(response.data.ssid);
+            $scope.ssidToSwitch = response.data.ssid;
+            $scope.macidToSwitch = response.data.macid;
+        });        
+    }
+
+    $scope.updateUid = function(uid){
+        $scope.curru = uid.name;
+
+            
+        if ($scope.currDev != "") {
+            var deviceID = $scope.currDev;
+            var uid = $scope.curru;
+            var location = $scope.Lnglat[0] + "," + $scope.Lnglat[1];
+
+            console.log(deviceID);
+            console.log(uid);
+            console.log(location);
+            console.log("----------------");
+
+            httpService.getMacidByPrefByUidLoc(deviceID, uid, location).then(function(response) {
+                console.log(response.data.macid);
+                console.log(response.data.ssid);
+                $scope.ssidToSwitch = response.data.ssid;
+                $scope.macidToSwitch = response.data.macid;
+            });
+        }
+    };
+
+    $scope.decisionMakerInit = function () {
+        // vm.clickCluster = new MarkerClusterer(vm.map, [], {});
+        // $scope.hideDecision = true;
+        decisionMakerMapInit();
+        // getlocation();
+        // setTimeout(function () {
+        //     $scope.$apply(assignNetworks());
+        // }, 2000);
+
+        httpService.getAllDevice().then(function(response) {
+            $scope.currDevice = response.data.device_id;
+        });
+
+        httpService.getAlluid().then(function(response) {
+            $scope.currUid = response.data.uid;
+        });
+    };
+
     // Init network data
     $scope.networkDataInit = function () {
+       vm.clickCluster = new MarkerClusterer(vm.map,[], {});
        mapinit();
        getlocation();
        setTimeout(function(){$scope.$apply(assignNetworks());}, 2000);
+       httpService.getAllDevice().then(function(response){
+          $scope.currDevice = response.data.device_id;
+       });
+       httpService.getAlluid().then(function(response){
+          $scope.currUid = response.data.uid;
+       });
     };
 
     // Init application data
@@ -414,7 +520,7 @@ function homeController($scope, $http, $window, httpService, NgMap) {
                 },
                 yAxis: {
                     title: {
-                        text: 'Download'
+                        text: 'Upload'
                     }
                 },
                 legend: {
@@ -536,6 +642,48 @@ function httpService($http) {
             url: "http://maps.googleapis.com/maps/api/geocode/json",
             method: "GET",
             params: {latlng: Longtitude + "," + Latitude}
+        });
+    }
+    this.getAllSSID = function(Longtitude, Latitude){
+        return $http({
+            url: preUrl +"/network/getallssid",
+            medthod: "GET",
+            params: {location: Longtitude+","+Latitude }
+        });
+    }
+    this.getAlluid = function(){
+        return $http({
+            url: preUrl +"/network/getalluid",
+            medthod: "GET"
+        });
+    }
+    this.getAllDevice = function(){
+        return $http({
+            url: preUrl +"/network/getalldevice",
+            medthod: "GET"
+        });
+    }
+
+    this.getMacidByPrefByUidLoc = function(deviceID_p, uid_p, location_p) {
+        return $http({
+            url: preUrl + "/event/getmacidbyprefbyuidloc",
+            method: "GET",
+            params: {
+                device_id: deviceID_p,
+                uid: uid_p,
+                location: location_p
+            }
+        });
+    }
+
+    this.getMacIdByPrefByLoc = function(deviceID_p, location_p) {
+        return $http({
+            url: preUrl + "/event/getmacidbyprefbyloc",
+            method: "GET",
+            params: {
+                device_id: deviceID_p,
+                location: location_p
+            }
         });
     }
 }
