@@ -139,7 +139,7 @@ def get_macid_by_pref_by_loc():
     # user_id = request.args.get('user_id')
     device_id = request.args.get('device_id')
     location = request.args.get('location').split(",")
-    location = str(location[0][:8]) + ',' + str(location[1][:7])
+    location = str(location[0][:7]) + ',' + str(location[1][:6])
     # loc_param = request.args.get('location')
     # curr_net = request.args.get('curr_net')
 
@@ -196,7 +196,7 @@ def set_loc_pref():
     user_id = params['user_id']
     device_id = params['device_id']
     location = params['location'].split(',')
-    location = str(location[0][:8]) + ',' + str(location[1][:7])
+    location = str(location[0][:7]) + ',' + str(location[1][:6])
     time = params['time']
     pref = params['preference']
     location_name = params['location_name']

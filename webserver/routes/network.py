@@ -470,7 +470,7 @@ def get_all_ssid_by_loc():
     """
 
     location = request.args.get('location').split(",")
-    location = str(location[0][:8]) + ',' + str(location[1][:7])
+    location = str(location[0][:7]) + ',' + str(location[1][:6])
     loc_param = request.args.get('location')
 
     try:
