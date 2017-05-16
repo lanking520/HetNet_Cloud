@@ -41,10 +41,20 @@ def upload_network():
                     'INSERT INTO networkdata(macid, ssid, security, location, avgss, device_id, time) VALUES(%s, %s, %s, %s, %s, %s, %s)',
                     network['macid'], network["ssid"], network["security"],
                     location, network["avgss"], device_id, time)
+
             else:
-                cursor_update = g.conn.execute(
-                    'UPDATE networkdata SET macid = %s, security = %s, location = %s, avgss = %s, device_id = %s, time = %s WHERE ssid = %s AND location = %s',
-                    network['macid'], network['security'], location, network['avgss'], device_id, time, network['ssid'], location)
+
+                cursor_insert = g.conn.execute(
+                    'SELECT macid FROM networkdata WHERE ssid = %s AND location = %s',
+                    network["ssid"], location
+                )
+
+                for row in cursor_select:
+                    if row['macid'] == "":
+                        cursor_update = g.conn.execute(
+                            'UPDATE networkdata SET macid = %s, security = %s, location = %s, avgss = %s, device_id = %s, time = %s WHERE ssid = %s AND location = %s',
+                            network['macid'], network['security'], location, network['avgss'], device_id, time,
+                            network['ssid'], location)
 
     except Exception as e:
         print e
